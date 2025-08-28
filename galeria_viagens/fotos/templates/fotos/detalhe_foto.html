@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ foto.titulo }} - Galeria de Viagens</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <header class="bg-gray-900 text-white p-6 shadow-lg rounded-b-lg">
+        <div class="container mx-auto flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="text-4xl mr-4">
+                    <i class="fas fa-camera-retro"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-center sm:text-left">Galeria de Viagens</h1>
+            </div>
+            <nav>
+                <a href="{% url 'index' %}" class="text-gray-300 hover:text-white transition duration-300 ease-in-out">Voltar para a Galeria</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container mx-auto p-6 mt-8 bg-white rounded-lg shadow-md">
+        <div class="flex flex-col md:flex-row gap-8">
+            {% if foto.imagem %}
+                <div class="md:w-1/2">
+                    <img src="{{ foto.imagem.url }}" alt="{{ foto.titulo }}" class="w-full h-auto object-cover rounded-lg shadow-md">
+                </div>
+            {% endif %}
+            <div class="md:w-1/2">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ foto.titulo }}</h2>
+                <div class="mb-6 border-b pb-4">
+                    <p class="text-gray-700 text-lg"><strong><i class="fas fa-map-marker-alt mr-2"></i>Local:</strong> {{ foto.local }}</p>
+                    <p class="text-gray-700 text-lg"><strong><i class="fas fa-calendar-alt mr-2"></i>Data:</strong> {{ foto.data_viagem|date:"d/m/Y" }}</p>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-800 mb-2">Descrição da Viagem</h3>
+                <p class="text-gray-700 mb-6 leading-relaxed">{{ foto.descricao }}</p>
+            </div>
+        </div>
+        <div class="mt-8 text-center">
+            <a href="{% url 'index' %}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out shadow-lg">&larr; Voltar para a Galeria</a>
+        </div>
+    </main>
+    <footer class="mt-12 p-6 text-center text-gray-600">
+        <p>&copy; {% now "Y" %} Galeria de Viagens. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
