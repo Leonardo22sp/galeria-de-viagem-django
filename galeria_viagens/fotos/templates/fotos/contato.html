@@ -1,0 +1,44 @@
+{% extends 'fotos/base.html' %}
+
+{% block title %}Contato{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Contato</h1>
+    <p class="text-lg text-slate-600 mb-8 leading-relaxed">Tem dúvidas, sugestões ou quer compartilhar sua experiência de viagem? Entre em contato conosco!</p>
+    
+    <form class="space-y-6" method="POST">
+        {% csrf_token %}
+        <div>
+            <label class="block text-slate-700 font-bold mb-2" for="id_nome">Nome</label>
+            {{ form.nome }}
+        </div>
+        <div>
+            <label class="block text-slate-700 font-bold mb-2" for="id_email">Email</label>
+            {{ form.email }}
+        </div>
+        <div>
+            <label class="block text-slate-700 font-bold mb-2" for="id_mensagem">Mensagem</label>
+            {{ form.mensagem }}
+        </div>
+        <div>
+            <button class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg" type="submit">Enviar Mensagem</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    input[type="text"], input[type="email"], textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+    }
+    input:focus, textarea:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #14b8a6;
+        border-color: #14b8a6;
+    }
+</style>
+{% endblock %}

@@ -1,42 +1,94 @@
 {% extends 'fotos/base.html' %}
+{% load static %}
 
-{% block title %}Galeria de Viagens - Início{% endblock %}
+{% block title %}
+    {% if continente_selecionado %}
+        Fotos de {{ continente_selecionado }}
+    {% else %}
+        Galeria de Viagens - Explore o Mundo
+    {% endif %}
+{% endblock %}
 
 {% block content %}
-<section class="container mx-auto p-4 flex justify-center -mt-12">
-    <form method="get" action="{% url 'buscar' %}" class="w-full max-w-lg flex bg-white rounded-full shadow-md overflow-hidden">
-        <input 
-            type="text"
-            name="q"
-            value="{{ query|default:'' }}"
-            placeholder="O que você procura?"
-            class="flex-grow p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-l-full pl-5">
-        <button
-            type="submit"
-            class="bg-blue-500 hover:bg-blue-600 text-white p-3 px-6 rounded-r-full transition duration-300 ease-in-out flex items-center justify-center">
-            <i class="fas fa-search mr-2"></i> Buscar
-        </button>
-    </form>
+
+{% if foto_destaque and foto_destaque.imagem %}
+<header 
+    class="relative -mt-6 -mx-6 h-[60vh] flex items-center justify-center text-center bg-cover bg-center" 
+    style="background-image: url('{{ foto_destaque.imagem.url }}');">
+{% else %}
+<header 
+    class="relative -mt-6 -mx-6 h-[60vh] flex items-center justify-center text-center bg-cover bg-center" 
+    style="background-color: #1e293b;">
+{% endif %}
+    
+    <div class="absolute inset-0 bg-slate-900 bg-opacity-60"></div>
+    
+    <div class="relative z-10 p-6 text-white max-w-3xl">
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-4 tracking-tight leading-tight">Um Olhar, Um Destino, Uma História</h1>
+        <p class="text-lg md:text-xl text-slate-200 mb-8">Navegue por nossa coleção de momentos capturados ao redor do globo e encontre a inspiração para sua próxima grande aventura.</p>
+        
+        <form method="get" action="{% url 'buscar' %}" class="w-full max-w-xl mx-auto flex bg-white rounded-full shadow-2xl overflow-hidden">
+            <input 
+                type="text"
+                name="q"
+                value="{{ query|default:'' }}"
+                placeholder="Busque por um destino..."
+                class="flex-grow p-4 text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500 rounded-l-full pl-6 text-lg">
+            <button
+                type="submit"
+                class="bg-teal-500 hover:bg-teal-600 text-white p-4 px-8 rounded-r-full transition-colors duration-300 flex items-center justify-center font-bold">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
+</header>
+
+<section class="py-12 bg-slate-50 -mx-6 px-6">
+    <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-bold text-slate-800 mb-2">Explore por Continente</h2>
+        <p class="text-slate-600 mb-6">Clique em um continente para filtrar as galerias de fotos.</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+            {% for slug, nome in continentes_list %}
+                <a href="{% url 'filtrar_continente' slug %}" class="bg-white hover:bg-teal-500 text-slate-700 hover:text-white font-semibold px-5 py-2 rounded-full transition-all duration-300 shadow-md border border-slate-200 hover:border-teal-500">{{ nome }}</a>
+            {% endfor %}
+        </div>
+    </div>
 </section>
 
-<div class="bg-white rounded-lg shadow-md p-6 mt-8">
-    <h2 class="text-2xl font-semibold mb-6 text-center">Nossas Melhores Fotos</h2>
-    <div class="flex flex-wrap justify-center gap-6">
+<div class="container mx-auto mt-12">
+    <h2 class="text-3xl font-bold mb-8 text-center text-slate-900 tracking-tight">
+        {% if continente_selecionado %}
+            Explorando {{ continente_selecionado }}
+        {% elif query %}
+            Resultados para "{{ query }}"
+        {% else %}
+            Recentes Adições à Galeria
+        {% endif %}
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {% if cards %}
             {% for card in cards %}
-            <div class="w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
-                <a href="{% url 'detalhe_foto' card.id %}">
-                    {% if card.imagem %}
-                    <img src="{{ card.imagem.url }}" alt="{{ card.titulo }}" class="w-full h-48 object-cover rounded-md mb-4">
-                    {% endif %}
+            <div class="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 ease-in-out hover:-translate-y-2">
+                <a href="{% url 'detalhe_foto' card.id %}" class="block">
+                    <div class="overflow-hidden rounded-t-xl">
+                        {% if card.imagem %}
+                        <img src="{{ card.imagem.url }}" alt="{{ card.titulo }}" class="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-300">
+                        {% endif %}
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-slate-800">{{ card.titulo }}</h3>
+                        <p class="text-slate-600 mb-4 flex items-center"><i class="fas fa-map-marker-alt mr-2 text-slate-400"></i>{{ card.local }}</p>
+                        <span class="font-semibold text-teal-600 hover:text-teal-800 transition-colors duration-300">Ver Detalhes &rarr;</span>
+                    </div>
                 </a>
-                <h3 class="text-xl font-bold mb-2 text-gray-800">{{ card.titulo }}</h3>
-                <p class="text-gray-600 mb-4">{{ card.local }}</p>
-                <a href="{% url 'detalhe_foto' card.id %}" class="text-blue-600 hover:text-blue-800 font-semibold">Ver Detalhes &rarr;</a>
             </div>
             {% endfor %}
         {% else %}
-            <p class="col-span-full text-center text-gray-500">Nenhuma foto encontrada.</p>
+            <div class="col-span-full text-center bg-slate-50 rounded-xl p-12">
+                <i class="fas fa-camera-retro text-4xl text-slate-400 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-slate-700">Nenhuma foto encontrada</h3>
+                <p class="text-slate-500 mt-2">Tente ajustar sua busca ou selecione outro continente.</p>
+            </div>
         {% endif %}
     </div>
 </div>

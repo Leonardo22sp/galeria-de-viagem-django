@@ -1,0 +1,14 @@
+{% extends 'fotos/base.html' %}
+
+{% block title %}Mensagem Enviada!{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-xl text-center">
+    <i class="fas fa-check-circle text-6xl text-teal-500 mb-6"></i>
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Obrigado!</h1>
+    <p class="text-lg text-slate-600 mb-8 leading-relaxed">Sua mensagem foi enviada com sucesso. Entraremos em contato em breve.</p>
+    <a href="{% url 'index' %}" class="inline-block bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-md hover:shadow-lg">
+        Voltar à Página Inicial
+    </a>
+</div>
+{% endblock %}

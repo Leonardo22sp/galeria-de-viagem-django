@@ -1,28 +1,77 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Foto
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Foto, CONTINENTES
+from .forms import ContatoForm
+import csv
+from datetime import datetime
+import os
 
 def index(request):
-    """Renderiza a página inicial com todas as fotos publicadas."""
     fotos = Foto.objects.filter(publicada=True).order_by('-data_viagem')
-    return render(request, 'fotos/index.html', {'cards': fotos})
+    foto_destaque = Foto.objects.filter(publicada=True, destaque=True).order_by('?').first()
+    contexto = {
+        'cards': fotos,
+        'continentes_list': CONTINENTES,
+        'foto_destaque': foto_destaque,
+    }
+    return render(request, 'fotos/index.html', contexto)
 
 def detalhe_foto(request, foto_id):
-    """Renderiza a página de detalhes para uma única foto."""
     foto = get_object_or_404(Foto, pk=foto_id)
     return render(request, 'fotos/detalhe_foto.html', {'foto': foto})
 
 def buscar(request):
-    """Filtra as fotos com base em uma consulta de busca e reutiliza o template da página inicial para exibir os resultados."""
     fotos_publicadas = Foto.objects.filter(publicada=True).order_by('-data_viagem')
-    
     query = request.GET.get('q')
     if query:
         resultados = fotos_publicadas.filter(titulo__icontains=query)
     else:
         resultados = fotos_publicadas
-
     contexto = {
         'cards': resultados,
         'query': query,
+        'continentes_list': CONTINENTES,
     }
     return render(request, 'fotos/index.html', contexto)
+
+def filtrar_continente(request, continente_slug):
+    continente_info = dict(CONTINENTES)
+    continente_nome = continente_info.get(continente_slug, "Desconhecido")
+    fotos_publicadas = Foto.objects.filter(publicada=True, continente=continente_slug).order_by('-data_viagem')
+    contexto = {
+        'cards': fotos_publicadas,
+        'continentes_list': CONTINENTES,
+        'continente_selecionado': continente_nome,
+    }
+    return render(request, 'fotos/index.html', contexto)
+
+def sobre_nos(request):
+    return render(request, 'fotos/sobre_nos.html')
+
+def contato(request):
+    if request.method == 'POST':
+        form = ContatoForm(request.POST)
+        if form.is_valid():
+            nome = form.cleaned_data['nome']
+            email = form.cleaned_data['email']
+            mensagem = form.cleaned_data['mensagem']
+            data_envio = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            file_path = 'mensagens.csv'
+            file_exists = os.path.isfile(file_path)
+            with open(file_path, 'a', newline='', encoding='utf-8') as csvfile:
+                fieldnames = ['data_envio', 'nome', 'email', 'mensagem']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                if not file_exists:
+                    writer.writeheader()
+                writer.writerow({
+                    'data_envio': data_envio,
+                    'nome': nome,
+                    'email': email,
+                    'mensagem': mensagem
+                })
+            return redirect('contato_sucesso')
+    else:
+        form = ContatoForm()
+    return render(request, 'fotos/contato.html', {'form': form})
+
+def contato_sucesso(request):
+    return render(request, 'fotos/contato_sucesso.html')

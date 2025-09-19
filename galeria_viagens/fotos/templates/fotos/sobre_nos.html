@@ -1,0 +1,65 @@
+{% extends 'fotos/base.html' %}
+
+{% block title %}Sobre Nossa Jornada{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl">
+    <section class="text-center mb-12">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">Nossa História é Contada Através de Lentes e Horizontes</h1>
+        <p class="max-w-3xl mx-auto text-lg text-slate-600 leading-relaxed">
+            Mais do que uma simples galeria, este é um convite para explorar o mundo, sentir a textura de culturas distantes e se maravilhar com a beleza que reside nos lugares mais inesperados.
+        </p>
+    </section>
+
+    <section class="mb-12 border-t pt-8">
+        <div class="flex items-center mb-4">
+            <i class="fas fa-bullseye mr-3 text-teal-500 text-2xl"></i>
+            <h2 class="text-3xl font-bold text-slate-800">Nossa Missão</h2>
+        </div>
+        <p class="text-lg text-slate-700 leading-relaxed">
+            Nossa missão é inspirar a curiosidade e o desejo de aventura. Acreditamos que cada imagem tem o poder de transportar, educar e conectar. Queremos construir pontes entre pessoas e lugares, mostrando que, apesar das diferenças, compartilhamos um planeta de maravilhas extraordinárias.
+        </p>
+    </section>
+
+    <section class="mb-12 border-t pt-8">
+        <div class="flex items-center mb-4">
+            <i class="fas fa-camera-retro mr-3 text-teal-500 text-2xl"></i>
+            <h2 class="text-3xl font-bold text-slate-800">Nossa Filosofia de Viagem</h2>
+        </div>
+        <div class="space-y-6 text-lg text-slate-700 leading-relaxed">
+            <p><strong>Fotografia com Alma:</strong> Cada clique busca capturar a essência do momento — não apenas a paisagem, mas a emoção, a atmosfera e a história que ela carrega.</p>
+            <p><strong>Viagem Consciente:</strong> Acreditamos em um turismo que respeita e enriquece as comunidades locais e o meio ambiente. Viajar é um privilégio que vem com a responsabilidade de deixar um impacto positivo.</p>
+            <p><strong>Conexão Humana:</strong> As melhores lembranças são, muitas vezes, as pessoas que encontramos. Buscamos celebrar a diversidade humana e as histórias compartilhadas que tornam cada destino único.</p>
+        </div>
+    </section>
+    
+    <section class="border-t pt-8">
+        <div class="flex items-center mb-6">
+            <i class="fas fa-users mr-3 text-teal-500 text-2xl"></i>
+            <h2 class="text-3xl font-bold text-slate-800">Conheça os Viajantes</h2>
+        </div>
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="flex-1 bg-slate-50 p-6 rounded-xl text-center">
+                <i class="fas fa-mountain text-4xl text-teal-500 mb-4"></i>
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">Stefany Oliveira</h3>
+                <p class="text-slate-600">Especialista em capturar a majestade silenciosa da natureza. Para Stefany, cada montanha, floresta e deserto tem uma personalidade própria, e seu objetivo é traduzir essa grandiosidade em uma imagem que tire o fôlego.</p>
+            </div>
+            <div class="flex-1 bg-slate-50 p-6 rounded-xl text-center">
+                <i class="fas fa-city text-4xl text-teal-500 mb-4"></i>
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">Leonardo Silva</h3>
+                <p class="text-slate-600">Um contador de histórias urbanas, fascinado pelo pulsar das metrópoles. Leonardo explora ruas e mercados, buscando a beleza na rotina e a energia que define cada cidade, desde os becos escondidos de Tóquio até os cafés de Paris.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="text-center mt-12 border-t pt-8">
+        <h2 class="text-3xl font-bold text-slate-800 mb-4">Junte-se à nossa jornada</h2>
+        <p class="text-lg text-slate-600 mb-6 max-w-2xl mx-auto">
+            Explore nossas galerias, perca-se nas paisagens e, quem sabe, inspire-se para a sua próxima aventura. Se tiver alguma dúvida ou quiser compartilhar sua própria história, <a href="{% url 'contato' %}" class="text-teal-600 font-semibold hover:underline">entre em contato</a>.
+        </p>
+        <a href="{% url 'index' %}" class="inline-block bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-md hover:shadow-lg">
+            Explorar Galerias
+        </a>
+    </section>
+</div>
+{% endblock %}
