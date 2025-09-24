@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Foto, CONTINENTES
+from .models import Foto, CONTINENTES, ESTILOS
 from .forms import ContatoForm
 import csv
 from datetime import datetime
@@ -11,7 +11,19 @@ def index(request):
     contexto = {
         'cards': fotos,
         'continentes_list': CONTINENTES,
+        'estilos_list': ESTILOS,
         'foto_destaque': foto_destaque,
+    }
+    return render(request, 'fotos/index.html', contexto)
+def filtrar_estilo(request, estilo_slug):
+    estilo_info = dict(ESTILOS)
+    estilo_nome = estilo_info.get(estilo_slug, "Desconhecido")
+    fotos_publicadas = Foto.objects.filter(publicada=True, estilo=estilo_slug).order_by('-data_viagem')
+    contexto = {
+        'cards': fotos_publicadas,
+        'estilos_list': ESTILOS,
+        'estilo_selecionado': estilo_nome,
+        'continentes_list': CONTINENTES,
     }
     return render(request, 'fotos/index.html', contexto)
 

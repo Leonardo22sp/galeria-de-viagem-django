@@ -3,6 +3,7 @@
 import os
 import sys
 
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'galeria_viagens.settings')
@@ -16,5 +17,9 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+
 if __name__ == '__main__':
     main()
+
+os.chdir("C:\\Users\\DEV-N-2025\\Desktop\\Projeto 3")
+os.system("python manage.py runserver")
